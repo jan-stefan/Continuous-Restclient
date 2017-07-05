@@ -11,7 +11,8 @@ var REST = (function () {
         requestStateClientError: "DEBUG: State changed: Client error.",
         requestStateServerError: "DEBUG: State changed: Server error.",
         xmlHttpRequestSend: "DEBUG: Request was send.",
-        xmlHttpRequestOpened: "DEBUG: Request was opened."
+        xmlHttpRequestOpened: "DEBUG: Request was opened.",
+        xmlHttpRequestSendWithoutBody:"DEBUG: Request was send without body."
     };
 
     var message = {
@@ -107,8 +108,8 @@ var REST = (function () {
      * @param body
      * @constructor
      */
-    REST.prototype.DELETE = function (url, synch, body, onSuccess, onServerError, onClientError, onRedirect) {
-        request(methods.delete, url, synch, onSuccess, body, onRedirect, onClientError, onServerError);
+    REST.prototype.DELETE = function (url, synch, onSuccess, onServerError, onClientError, onRedirect) {
+        request(methods.delete, url, synch, onSuccess, null, onRedirect, onClientError, onServerError);
     };
 
     /**
@@ -143,6 +144,7 @@ var REST = (function () {
     function request(method, url, asynchmode, onReady, body, onRedirect, onClientError, onServerError, headerCallback) {
         var xhttp;
         xhttp = new XMLHttpRequest();
+
 
         if (properties.debug) {
             console.debug();
@@ -187,10 +189,19 @@ var REST = (function () {
             console.debug(debugMessages.xmlHttpRequestOpened);
         }
 
-        xhttp.send(body);
-        if (properties.debug) {
-            console.debug(debugMessages.xmlHttpRequestSend);
+        if (body == null) {
+            xhttp.send();
+            if (properties.debug) {
+                console.debug(debugMessages.xmlHttpRequestSendWithoutBody);
+            }
+        } else if (body != null) {
+
+            xhttp.send(body);
+            if (properties.debug) {
+                console.debug(debugMessages.xmlHttpRequestSend);
+            }
         }
+
     }
 
     function debugSuccessful(status) {
