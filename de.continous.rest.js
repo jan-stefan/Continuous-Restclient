@@ -152,7 +152,10 @@ var REST = (function () {
 
         xhttp.onreadystatechange = function () {
             if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status <= 299) {//successfully requested.
-                onReady(xhttp.responseText, xhttp.status, message.successful);
+
+                if (onReady!=null){
+                    onReady(xhttp.responseText, xhttp.status, message.successful);
+                }
 
                 if (headerCallback != null) {
                     headerCallback(xhttp.getAllResponseHeaders(), xhttp.status, message.successful);
@@ -201,7 +204,6 @@ var REST = (function () {
                 console.debug(debugMessages.xmlHttpRequestSend);
             }
         }
-
     }
 
     function debugSuccessful(status) {
