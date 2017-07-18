@@ -115,6 +115,17 @@ var REST = (function () {
         request(methods.head, url, asynch, null, null, onSuccess);
     };
 
+
+
+    REST.prototype.OPTIONS = function () {
+        //todo: implement
+    };
+
+    REST.prototype.TRACE = function () {
+        //todo: implement
+    };
+
+
     // noinspection JSValidateJSDoc
     /**
      * Sends the request for all different types of methods.
