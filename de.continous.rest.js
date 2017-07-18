@@ -23,7 +23,8 @@ var REST = (function () {
         put: "PUT",
         delete: "DELETE",
         head: "HEAD",
-        options: "OPTIONS"
+        options: "OPTIONS",
+        trace:"TRACE"
     };
 
     /**
@@ -121,8 +122,19 @@ var REST = (function () {
         //todo: implement
     };
 
-    REST.prototype.TRACE = function () {
-        //todo: implement
+
+    // noinspection JSValidateJSDoc
+    /**
+     * Trace methods fires a standard request but gets returned what the restservice receives on the other side.
+     *
+     * @param url {string} Url where the resource can be found.
+     * @param body The body which should be transfered to the Restful service.
+     * @param asynch {boolean} Is this request actually synchronous or asynchronous?
+     * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
+     * @constructor
+     */
+    REST.prototype.TRACE = function (url,body,asynch,onSuccess) {
+        request(methods.trace,url,asynch,onSuccess,body,null);
     };
 
 
