@@ -117,9 +117,16 @@ var REST = (function () {
     };
 
 
-
-    REST.prototype.OPTIONS = function () {
-        //todo: implement
+    // noinspection JSValidateJSDoc
+    /**
+     * Options method receives all options which are available when interacting with a resource.
+     * @param url {string} Url where the resource can be found.
+     * @param asynch {boolean} Is this request actually synchronous or asynchronous?
+     * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request. The injected responseText includes the options.
+     * @constructor
+     */
+    REST.prototype.OPTIONS = function (url,asynch,onSuccess) {
+        request(methods.options,url,asynch,onSuccess,null,null);
     };
 
 
