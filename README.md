@@ -1,4 +1,4 @@
-# Continous-Restclient
+# Continuous-Restclient
 
 A simple javascript based rest client which helps you to easily access restful services.
 
