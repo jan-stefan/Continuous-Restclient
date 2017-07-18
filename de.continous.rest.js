@@ -14,7 +14,7 @@ var REST = (function () {
     };
 
     var message = {
-        successful: "SUCCESS: successfully requested.",
+        successful: "SUCCESS: successfully requested."
     };
 
     var methods = {
@@ -121,9 +121,9 @@ var REST = (function () {
      * @param method
      * @param url
      * @param asynchmode
-     * @param onReady {function(responseText)}
+     * @param onReady {function(responseText, statusCode, statusMessage)}
      * @param body The body of the request which will be send with it. Can be: ArrayBuffer, ArrayBufferView, Blob, Document,DOMString,FormData, string or empty.
-     * @param headerCallback {function(resonseHeader,statusCode,statusMessage)}
+     * @param headerCallback {function(responseText, statusCode, statusMessage)}
      * @return {request}
      */
     function request(method, url, asynchmode, onReady, body, headerCallback) {
@@ -173,13 +173,3 @@ var REST = (function () {
 
     return REST;
 })();
-
-var request = new REST();
-
-request.enableDebugMode();
-request.GET("http://localhost:8080/test", true,
-    function (responseText, statusCode, statusMessage) {
-        console.log(responseText);
-        console.log(statusCode);
-        console.log(statusMessage);
-    });
