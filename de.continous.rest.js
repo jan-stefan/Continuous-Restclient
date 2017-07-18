@@ -7,12 +7,10 @@ var REST = (function () {
 
     var debugMessages = {
         requestStateSuccessful: "DEBUG: State changed: Request was successful.",
-        requestStateRedirected: "DEBUG: State changed: Redirected.",
-        requestStateClientError: "DEBUG: State changed: Client error.",
-        requestStateServerError: "DEBUG: State changed: Server error.",
         xmlHttpRequestSend: "DEBUG: Request was send.",
         xmlHttpRequestOpened: "DEBUG: Request was opened.",
-        xmlHttpRequestSendWithoutBody:"DEBUG: Request was send without body."
+        xmlHttpRequestSendWithoutBody: "DEBUG: Request was send without body.",
+        requestStarted: "started request using debug mode."
     };
 
     var message = {
@@ -61,7 +59,7 @@ var REST = (function () {
      * @constructor
      */
     REST.prototype.GET = function (url, asynch, onSuccess) {
-        request(methods.get,url,asynch,onSuccess,null,null);
+        request(methods.get, url, asynch, onSuccess, null, null);
     };
 
     /**
@@ -74,7 +72,7 @@ var REST = (function () {
      * @constructor
      */
     REST.prototype.POST = function (url, asynch, body, onSuccess) {
-        request(methods.post,url,asynch,onSuccess,body,null);
+        request(methods.post, url, asynch, onSuccess, body, null);
     };
 
     /**
@@ -88,7 +86,7 @@ var REST = (function () {
      * @constructor
      */
     REST.prototype.PUT = function (url, asynch, body, onSuccess) {
-        request(methods.put,url,asynch,onSuccess,body,null);
+        request(methods.put, url, asynch, onSuccess, body, null);
     };
 
     /**
@@ -100,7 +98,7 @@ var REST = (function () {
      * @constructor
      */
     REST.prototype.DELETE = function (url, asynch, onSuccess) {
-        request(methods.delete,url,asynch,onSuccess,null,null);
+        request(methods.delete, url, asynch, onSuccess, null, null);
     };
 
     /**
@@ -112,7 +110,7 @@ var REST = (function () {
      * @constructor
      */
     REST.prototype.HEAD = function (url, asynch, onSuccess) {
-        request(methods.head,url,asynch,null,null,onSuccess);
+        request(methods.head, url, asynch, null, null, onSuccess);
     };
 
     /**
@@ -126,49 +124,55 @@ var REST = (function () {
      * @return {request}
      */
     function request(method, url, asynchmode, onReady, body, headerCallback) {
-        var xhttp;
-        xhttp = new XMLHttpRequest();
+        var request;
+        request = new XMLHttpRequest();
 
 
         if (properties.debug) {
-            console.debug("started request using debug mode.");
+            console.debug(debugMessages.requestStarted);
         }
 
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status <= 299) {//successfully requested.
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status >= 200 && request.status <= 299) {//successfully requested.
 
-                if (onReady!=null){
-                    onReady(xhttp.responseText, xhttp.status, message.successful);
+                if (onReady != null) {
+                    onReady(request.responseText, request.status, message.successful);
                 }
 
                 if (headerCallback != null) {
-                    headerCallback(xhttp.getAllResponseHeaders(), xhttp.status, message.successful);
-                }
-                if (properties.debug) {
-                    debugSuccessful(xhttp.status);
+                    headerCallback(request.getAllResponseHeaders(), request.status, message.successful);
                 }
             }
         };
 
-        xhttp.open(method, url, asynchmode);
+        request.open(method, url, asynchmode);
         if (properties.debug) {
             console.debug(debugMessages.xmlHttpRequestOpened);
         }
 
         if (body == null) {
-            xhttp.send();
+            request.send();
             if (properties.debug) {
                 console.debug(debugMessages.xmlHttpRequestSendWithoutBody);
             }
         } else if (body != null) {
 
-            xhttp.send(body);
+            request.send(body);
             if (properties.debug) {
                 console.debug(debugMessages.xmlHttpRequestSend);
             }
         }
     }
 
-
     return REST;
 })();
+
+var request = new REST();
+
+request.enableDebugMode();
+request.GET("http://localhost:8080/test", true,
+    function (responseText, statusCode, statusMessage) {
+        console.log(responseText);
+        console.log(statusCode);
+        console.log(statusMessage);
+    });
