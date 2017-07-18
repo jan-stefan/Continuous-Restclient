@@ -31,7 +31,10 @@ var REST = (function () {
         options: "OPTIONS"
     };
 
-
+    /**
+     * Basic Constructor.
+     * @constructor
+     */
     function REST() {
     }
 
@@ -53,22 +56,22 @@ var REST = (function () {
      * Sends a get request to consume data from a Restful service.
      *
      * @param url {string} Url where the resource should be found.
-     * @param synch {boolean} Is this request actually synchronous or asynchronous?
+     * @param asynch {boolean} Is this request actually synchronous or asynchronous?
      * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
      * @param onServerError {function(responseText,statusCode,statusMessage)} function executes on a error at the server side.
      * @param onClientError {function(responseText,statusCode,statusMessage)} function executes on a error at the client side.
      * @param onRedirect {function(responseText,statusCode,statusMessage)} function executes if your were redirected.
      * @constructor
      */
-    REST.prototype.GET = function (url, synch, onSuccess, onServerError, onClientError, onRedirect) {
-        request(methods.get, url, synch, onSuccess, null, onRedirect, onClientError, onServerError, null);
+    REST.prototype.GET = function (url, asynch, onSuccess, onServerError, onClientError, onRedirect) {
+        request(methods.get, url, asynch, onSuccess, null, onRedirect, onClientError, onServerError, null);
     };
 
     /**
      * Creates new resource on the server. ResponseText provides a link to the newly created resource on the Restful service.
      *
      * @param url {string} Url where the new resource should be created.
-     * @param synch {boolean} Is this request actually synchronous or asynchronous?
+     * @param asynch {boolean} Is this request actually synchronous or asynchronous?
      * @param body The body which should be transfered to the Restful service.
      * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
      * @param onServerError {function(responseText,statusCode,statusMessage)} function executes on a error at the server side.
@@ -76,15 +79,15 @@ var REST = (function () {
      * @param onRedirect {function(responseText,statusCode,statusMessage)} function executes if your were redirected.
      * @constructor
      */
-    REST.prototype.POST = function (url, synch, body, onSuccess, onServerError, onClientError, onRedirect) {
-        request(methods.post, url, synch, onSuccess, body, onRedirect, onClientError, onServerError, null);
+    REST.prototype.POST = function (url, asynch, body, onSuccess, onServerError, onClientError, onRedirect) {
+        request(methods.post, url, asynch, onSuccess, body, onRedirect, onClientError, onServerError, null);
     };
 
     /**
      * PUT updates a existing resource. If the resource doesn't exist it tries to create it.
      *
      * @param url {string} The url to the resource beeing updated.
-     * @param synch {boolean} Is this request actually synchronous or asynchronous?
+     * @param asynch {boolean} Is this request actually synchronous or asynchronous?
      * @param body The body which should be transfered to the Restful service.
      * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
      * @param onServerError {function(responseText,statusCode,statusMessage)} function executes on a error at the server side.
@@ -92,15 +95,15 @@ var REST = (function () {
      * @param onRedirect {function(responseText,statusCode,statusMessage)} function executes if your were redirected.
      * @constructor
      */
-    REST.prototype.PUT = function (url, synch, body, onSuccess, onServerError, onClientError, onRedirect) {
-        request(methods.put, url, synch, onSuccess, body, onRedirect, onClientError, onServerError);
+    REST.prototype.PUT = function (url, asynch, body, onSuccess, onServerError, onClientError, onRedirect) {
+        request(methods.put, url, asynch, onSuccess, body, onRedirect, onClientError, onServerError);
     };
 
     /**
      * DELETE deletes a resource at the given url.
      *
      * @param url {string} Url where the resource should be deleted.
-     * @param synch {boolean} Is this request actually synchronous or asynchronous?
+     * @param asynch {boolean} Is this request actually synchronous or asynchronous?
      * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
      * @param onServerError {function(responseText,statusCode,statusMessage)} function executes on a error at the server side.
      * @param onClientError {function(responseText,statusCode,statusMessage)} function executes on a error at the client side.
@@ -108,23 +111,23 @@ var REST = (function () {
      * @param body
      * @constructor
      */
-    REST.prototype.DELETE = function (url, synch, onSuccess, onServerError, onClientError, onRedirect) {
-        request(methods.delete, url, synch, onSuccess, null, onRedirect, onClientError, onServerError);
+    REST.prototype.DELETE = function (url, asynch, onSuccess, onServerError, onClientError, onRedirect) {
+        request(methods.delete, url, asynch, onSuccess, null, onRedirect, onClientError, onServerError);
     };
 
     /**
      * Collects all metadata of a resource.
      *
      * @param url {string} Url where the resource can be found.
-     * @param synch {boolean} Is this request actually synchronous or asynchronous?
+     * @param asynch {boolean} Is this request actually synchronous or asynchronous?
      * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
      * @param onServerError {function(responseText,statusCode,statusMessage)} function executes on a error at the server side.
      * @param onClientError {function(responseText,statusCode,statusMessage)} function executes on a error at the client side.
      * @param onRedirect {function(responseText,statusCode,statusMessage)} function executes if your were redirected.
      * @constructor
      */
-    REST.prototype.HEAD = function (url, synch, onSuccess, onServerError, onClientError, onRedirect) {
-        request(methods.head, url, synch, null, null, onRedirect, onClientError, onServerError, onSuccess);
+    REST.prototype.HEAD = function (url, asynch, onSuccess, onServerError, onClientError, onRedirect) {
+        request(methods.head, url, asynch, null, null, onRedirect, onClientError, onServerError, onSuccess);
     };
 
 
