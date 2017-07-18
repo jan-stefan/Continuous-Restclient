@@ -111,11 +111,9 @@ var REST = (function () {
      * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
      * @constructor
      */
-    //todo change params
     REST.prototype.HEAD = function (url, asynch, onSuccess) {
-        request(methods.head, url, asynch, null, null, onRedirect, onClientError, onServerError, onSuccess);
+        request(methods.head,url,asynch,null,null,onSuccess);
     };
-
 
     /**
      * Sends the request for all different types of methods.
@@ -133,7 +131,7 @@ var REST = (function () {
 
 
         if (properties.debug) {
-            console.debug();
+            console.debug("started request using debug mode.");
         }
 
         xhttp.onreadystatechange = function () {
@@ -150,7 +148,6 @@ var REST = (function () {
                     debugSuccessful(xhttp.status);
                 }
             }
-
         };
 
         xhttp.open(method, url, asynchmode);
