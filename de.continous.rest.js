@@ -15,9 +15,6 @@ var REST = (function () {
 
     var message = {
         successful: "SUCCESS: successfully requested.",
-        serverError: "ERROR: Server didn\'t respond to your request.",
-        clientError: "ERROR: Client was NOT able to perform the request.",
-        redirect: "ERROR: Redirected."
     };
 
     var methods = {
@@ -55,7 +52,7 @@ var REST = (function () {
      *
      * @param url {string} Url where the resource should be found.
      * @param asynch {boolean} Is this request actually synchronous or asynchronous?
-     * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
+     * @param onSuccess {function(responseText,status,successful)} function executes on a successful request.
      * @constructor
      */
     REST.prototype.GET = function (url, asynch, onSuccess) {
@@ -68,7 +65,7 @@ var REST = (function () {
      * @param url {string} Url where the new resource should be created.
      * @param asynch {boolean} Is this request actually synchronous or asynchronous?
      * @param body The body which should be transfered to the Restful service.
-     * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
+     * @param onSuccess {function(responseText,status,successful)} function executes on a successful request.
      * @constructor
      */
     REST.prototype.POST = function (url, asynch, body, onSuccess) {
@@ -82,7 +79,7 @@ var REST = (function () {
      * @param url {string} The url to the resource beeing updated.
      * @param asynch {boolean} Is this request actually synchronous or asynchronous?
      * @param body The body which should be transfered to the Restful service.
-     * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
+     * @param onSuccess {function(responseText,status,successful)} function executes on a successful request.
      * @constructor
      */
     REST.prototype.PUT = function (url, asynch, body, onSuccess) {
@@ -94,7 +91,7 @@ var REST = (function () {
      *
      * @param url {string} Url where the resource should be deleted.
      * @param asynch {boolean} Is this request actually synchronous or asynchronous?
-     * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
+     * @param onSuccess {function(responseText,status,successful)} function executes on a successful request.
      * @constructor
      */
     REST.prototype.DELETE = function (url, asynch, onSuccess) {
@@ -106,7 +103,7 @@ var REST = (function () {
      *
      * @param url {string} Url where the resource can be found.
      * @param asynch {boolean} Is this request actually synchronous or asynchronous?
-     * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
+     * @param onSuccess {function(responseText,status,successful)} function executes on a successful request.
      * @constructor
      */
     REST.prototype.HEAD = function (url, asynch, onSuccess) {
@@ -120,7 +117,7 @@ var REST = (function () {
      * @param asynchmode
      * @param onReady {function(responseText)}
      * @param body The body of the request which will be send with it. Can be: ArrayBuffer, ArrayBufferView, Blob, Document,DOMString,FormData, string or empty.
-     * @param headerCallback {function(AllHeaders,statusCode,statusMessage)}
+     * @param headerCallback {function(AllHeaders,status,successful)}
      * @return {request}
      */
     function request(method, url, asynchmode, onReady, body, headerCallback) {
@@ -135,12 +132,13 @@ var REST = (function () {
         request.onreadystatechange = function () {
             if (request.readyState === 4 && request.status >= 200 && request.status <= 299) {//successfully requested.
 
-                if (onReady != null) {
+                if (onReady !== null) {
                     onReady(request.responseText, request.status, message.successful);
                 }
 
-                if (headerCallback != null) {
-                    headerCallback(request.getAllResponseHeaders(), request.status, message.successful);
+                if (headerCallback !== null) {
+
+                    headerCallback(request.getAllResponseHeaders(), request.status, message.successful); //injecting parameters for later use in callback function
                 }
             }
         };
@@ -150,12 +148,12 @@ var REST = (function () {
             console.debug(debugMessages.xmlHttpRequestOpened);
         }
 
-        if (body == null) {
+        if (body === null) {
             request.send();
             if (properties.debug) {
                 console.debug(debugMessages.xmlHttpRequestSendWithoutBody);
             }
-        } else if (body != null) {
+        } else if (body !== null) {
 
             request.send(body);
             if (properties.debug) {
