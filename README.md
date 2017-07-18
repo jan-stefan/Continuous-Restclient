@@ -2,7 +2,7 @@
 
 A simple javascript based rest client which helps you to easily access restful services.
 
-## Usage
+## Basic usage
 
 First of all build an instance of REST:
 
@@ -20,5 +20,4 @@ request.GET("http://host:port/resource",true,
 ```
 
 There is an implementation for every method a restful service should provide to you.
-This is only a small getting started example. visit the wikipages for more detailed information.
-
+This is only a small getting started example. Visit the [wikipages](https://github.com/stuffel95/Continous-Restclient/wiki) for more detailed information.
