@@ -145,6 +145,7 @@ var REST = (function () {
         request(methods.trace, url, asynch, onSuccess, body, null,null,null);
     };
 
+    // noinspection JSValidateJSDoc
     /**
      * Auhtenticates a user using username and password. The username an password will be combined into a new string send via a header called: "authenticate" and send to the given url.
      * This request uses the POST method but is actually not intended to create a resource.
@@ -162,16 +163,6 @@ var REST = (function () {
         var headerValue = (username + ":" + password);
         request(methods.post,url,asynch,onSuccess,body,null,properties.authenticationHeaderName,headerValue);
     };
-
-
-    REST.prototype.requestTokenSet = function (username,password) {
-        //todo implement
-    };
-
-    REST.prototype.refreshTokenSet = function (refreshToken) {
-        //todo implement
-    };
-
 
     // noinspection JSValidateJSDoc
     /**
@@ -237,22 +228,3 @@ var REST = (function () {
 
     return REST;
 })();
-
-// var request = new XMLHttpRequest();
-//
-// request.onreadystatechange = function () {
-//     if (request.readyState === 4 && request.status >= 200 && request.status <= 299) {//successfully requested.
-//
-//         console.log(request.responseText);
-//     }
-// };
-// request.open("POST", "http://localhost:8080/login", true);
-// request.setRequestHeader("authorization","username=stuffel95:password=pass1234");
-// request.send();
-//
-
-//example authentication
-// var client = new REST();
-// client.authenticate("http://localhost:8080/login","school1",true,"stuffel95","passwort1234",function (responseText) {
-//     console.log("Response was: " + responseText);
-// });
