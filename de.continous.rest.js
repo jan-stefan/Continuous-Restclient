@@ -163,6 +163,16 @@ var REST = (function () {
         request(methods.post,url,asynch,onSuccess,body,null,properties.authenticationHeaderName,headerValue);
     };
 
+
+    REST.prototype.requestTokenSet = function (username,password) {
+        //todo implement
+    };
+
+    REST.prototype.refreshTokenSet = function (refreshToken) {
+        //todo implement
+    };
+
+
     // noinspection JSValidateJSDoc
     /**
      * Sends the request for all different types of methods.
@@ -227,3 +237,22 @@ var REST = (function () {
 
     return REST;
 })();
+
+// var request = new XMLHttpRequest();
+//
+// request.onreadystatechange = function () {
+//     if (request.readyState === 4 && request.status >= 200 && request.status <= 299) {//successfully requested.
+//
+//         console.log(request.responseText);
+//     }
+// };
+// request.open("POST", "http://localhost:8080/login", true);
+// request.setRequestHeader("authorization","username=stuffel95:password=pass1234");
+// request.send();
+//
+
+//example authentication
+// var client = new REST();
+// client.authenticate("http://localhost:8080/login","school1",true,"stuffel95","passwort1234",function (responseText) {
+//     console.log("Response was: " + responseText);
+// });
