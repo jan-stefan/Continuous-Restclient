@@ -2,7 +2,8 @@ var REST = (function () {
 
     var properties = {
         errorMassage: "Request failed",
-        debug: false
+        debug: false,
+        authenticationHeaderName:"authenticate"
     };
 
     var debugMessages = {
@@ -24,7 +25,7 @@ var REST = (function () {
         delete: "DELETE",
         head: "HEAD",
         options: "OPTIONS",
-        trace:"TRACE"
+        trace: "TRACE"
     };
 
     /**
@@ -58,7 +59,7 @@ var REST = (function () {
      * @constructor
      */
     REST.prototype.GET = function (url, asynch, onSuccess) {
-        request(methods.get, url, asynch, onSuccess, null, null);
+        request(methods.get, url, asynch, onSuccess, null, null,null,null);
     };
 
     // noinspection JSValidateJSDoc
@@ -72,7 +73,7 @@ var REST = (function () {
      * @constructor
      */
     REST.prototype.POST = function (url, asynch, body, onSuccess) {
-        request(methods.post, url, asynch, onSuccess, body, null);
+        request(methods.post, url, asynch, onSuccess, body, null,null,null);
     };
 
     // noinspection JSValidateJSDoc
@@ -87,7 +88,7 @@ var REST = (function () {
      * @constructor
      */
     REST.prototype.PUT = function (url, asynch, body, onSuccess) {
-        request(methods.put, url, asynch, onSuccess, body, null);
+        request(methods.put, url, asynch, onSuccess, body, null,null,null);
     };
 
     // noinspection JSValidateJSDoc
@@ -100,7 +101,7 @@ var REST = (function () {
      * @constructor
      */
     REST.prototype.DELETE = function (url, asynch, onSuccess) {
-        request(methods.delete, url, asynch, onSuccess, null, null);
+        request(methods.delete, url, asynch, onSuccess, null, null,null,null);
     };
 
     // noinspection JSValidateJSDoc
@@ -113,7 +114,7 @@ var REST = (function () {
      * @constructor
      */
     REST.prototype.HEAD = function (url, asynch, onSuccess) {
-        request(methods.head, url, asynch, null, null, onSuccess);
+        request(methods.head, url, asynch, null, null, onSuccess,null,null);
     };
 
 
@@ -125,8 +126,8 @@ var REST = (function () {
      * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request. The injected responseText includes the options.
      * @constructor
      */
-    REST.prototype.OPTIONS = function (url,asynch,onSuccess) {
-        request(methods.options,url,asynch,onSuccess,null,null);
+    REST.prototype.OPTIONS = function (url, asynch, onSuccess) {
+        request(methods.options, url, asynch, onSuccess, null, null,null,null);
     };
 
 
@@ -140,10 +141,27 @@ var REST = (function () {
      * @param onSuccess {function(responseText,statusCode,statusMessage)} function executes on a successful request.
      * @constructor
      */
-    REST.prototype.TRACE = function (url,body,asynch,onSuccess) {
-        request(methods.trace,url,asynch,onSuccess,body,null);
+    REST.prototype.TRACE = function (url, body, asynch, onSuccess) {
+        request(methods.trace, url, asynch, onSuccess, body, null,null,null);
     };
 
+    /**
+     * Auhtenticates a user using username and password. The username an password will be combined into a new string send via a header called: "authenticate" and send to the given url.
+     * This request uses the POST method but is actually not intended to create a resource.
+     * It provides the ability of getting a response body which can be used as implemented by you or the system behind this client.
+     * There is no encryption at this point so it's recommanded to encrypt the data before sending it to the server.
+     * The username and password phrase will be seperated by a colon. So do not use colons in the encrypted phrases.
+     * @param url {string} Url where the authentication will happen
+     * @param body {string} Can be any content or extra information you might need for authentication.
+     * @param asynch {boolean}  Is this request actually synchronous or asynchronous?
+     * @param username {string} The username which will be transfered in the header. You should encrypt this before transfering it.
+     * @param password {string} The passward which will be transfered using the header. You should encrypt this before transfering it.
+     * @param onSuccess {function(responseText,statusCode,statusMessage)} callback function that executes on a successful request.
+     */
+    REST.prototype.authenticate = function (url,body,asynch,username,password,onSuccess) {
+        var headerValue = (username + ":" + password);
+        request(methods.post,url,asynch,onSuccess,body,null,properties.authenticationHeaderName,headerValue);
+    };
 
     // noinspection JSValidateJSDoc
     /**
@@ -154,9 +172,11 @@ var REST = (function () {
      * @param onReady {function(responseText, statusCode, statusMessage)}
      * @param body The body of the request which will be send with it. Can be: ArrayBuffer, ArrayBufferView, Blob, Document,DOMString,FormData, string or empty.
      * @param headerCallback {function(responseText, statusCode, statusMessage)}
+     * @param headerName {string} The name of the header which will identify the header you'll send.
+     * @param headerValue {string} the value of the newly created header.
      * @return {request}
      */
-    function request(method, url, asynchmode, onReady, body, headerCallback) {
+    function request(method, url, asynchmode, onReady, body, headerCallback,headerName,headerValue) {
         var request;
         request = new XMLHttpRequest();
 
@@ -185,6 +205,10 @@ var REST = (function () {
         request.open(method, url, asynchmode);
         if (properties.debug) {
             console.debug(debugMessages.xmlHttpRequestOpened);
+        }
+
+        if (headerName !== null && headerValue !== null){
+            request.setRequestHeader(headerName,headerValue);
         }
 
         if (body === null) {
